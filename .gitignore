@@ -1,0 +1,13 @@
+Trained_Model
+TrainingImage
+a.py
+ab.py
+cv.py
+database.sql
+debug.py
+dg.png
+label_encoder.pkl
+leave.png
+.idea
+.env
+__pycache__

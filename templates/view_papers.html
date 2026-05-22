@@ -1,0 +1,272 @@
+{% extends 'faculty_home.html' %}
+
+{% block navbar %}
+  <!-- ***** Header Area Start ***** -->
+  <header class="header-area header-sticky">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <nav class="main-nav navbar">
+                    <!-- ***** Logo Start ***** -->
+                    <a href="#" class="logo">
+                        <h1>PROCTOGUARD</h1>
+                    </a>
+                    <!-- ***** Logo End ***** -->
+                    <!-- ***** Menu Start ***** -->
+                    <ul class="nav">
+                        <li class="scroll-to-section" style="flex: 1;"><a href="{{ url_for('faculty_home') }}" class="active">Home</a></li>
+                        <li class="scroll-to-section" style="flex: 1;"><a href="{{ url_for('prediction') }}">Generate</a></li>
+                        <li class="scroll-to-section" style="flex: 1;"><a href="{{ url_for('qsnback')}}">Add Questions</a></li>
+                        <li class="scroll-to-section" style="flex: 1;"><a href="{{ url_for('create_exam_back')}}">Create Exam</a></li>
+                        <li class="scroll-to-section" style="flex: 1;"><a href="{{ url_for('viewqsn_faculty') }}">View Papers</a></li>
+                        <li class="scroll-to-section" style="flex: 1;"><a href="{{ url_for('exam_results') }}">Exam Results</a></li>
+                        <li class="scroll-to-section" style="flex: 1;"><a href="{{ url_for('faculty_login')}}">Logout</a></li>
+                    </ul>   
+                    <!-- ***** Menu End ***** -->
+                    <!-- Menu Toggler for Mobile -->
+                    <a href="#" class="menu-trigger">
+                        <span>Menu</span>
+                    </a>
+                </nav>
+            </div>
+        </div>
+    </div>
+  </header>
+  <!-- ***** Header Area End ***** -->
+{% endblock %}
+
+
+{% block content %}
+  <style>
+      /* Sticky navbar styles */
+      .header-area {
+          position: sticky;
+          top: 0;
+          z-index: 1000;
+          background-color: indigo; /* Violet background for the navbar */
+      }
+
+      .navbar {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          width: 100%;
+      }
+
+      .navbar .logo h1 {
+          margin: 0;
+          color: white; /* Logo text color */
+      }
+
+      .nav {
+          display: flex;
+          list-style: none;
+          margin: 0;
+          padding: 0;
+          width: 100%;
+      }
+
+      .nav li {
+          flex: 1;
+          text-align: center;
+      }
+
+      .nav a {
+          display: block;
+          text-decoration: none;
+          color: white; /* White text for links */
+          font-weight: bold;
+          text-transform: uppercase;
+          padding: 10px;
+      }
+
+      .nav a.active {
+          color: #ffcc00; /* Active link color (golden yellow) */
+      }
+
+      /* Menu Toggler (Hamburger) */
+      .menu-trigger {
+          display: none;
+          cursor: pointer;
+      }
+
+      .menu-trigger span {
+          font-size: 24px;
+          color: white; /* White color for the hamburger icon */
+      }
+
+      /* Mobile View */
+      @media (max-width: 768px) {
+          .menu-trigger {
+              display: block;
+          }
+
+          .nav {
+              display: none;
+              flex-direction: column;
+              position: absolute;
+              top: 60px;
+              left: 0;
+              width: 100%;
+              background-color: violet; /* Keep violet background for mobile menu */
+              box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+          }
+
+          .nav.active {
+              display: flex;
+          }
+
+          .nav li {
+              margin: 10px 0;
+              text-align: center;
+          }
+
+          .nav a {
+              font-size: 18px;
+              color: white; /* White text for mobile menu links */
+          }
+      }
+
+      /* Smooth scrolling */
+      html {
+          scroll-behavior: smooth;
+      }
+
+      /* Message styles */
+      .alert {
+          margin-top: 20px;
+          border-radius: 5px;
+      }
+
+      /* Admin login form */
+      .login-wrapper {
+          max-width: 500px;
+          margin: 100px auto;
+          padding: 30px;
+          background-color: #f9f9f9;
+          border-radius: 8px;
+          box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      .login-wrapper h2 {
+          text-align: center;
+          margin-bottom: 30px;
+          font-size: 28px;
+          color: indigo;
+      }
+
+      .form-label {
+          font-weight: bold;
+      }
+
+      .btn-primary {
+          background-color: indigo;
+          color: white;
+          border: none;
+          padding: 10px 20px;
+          width: 100%;
+          font-size: 18px;
+          border-radius: 5px;
+      }
+
+      .btn-primary:hover {
+          background-color: #3d2a8b;
+      }
+
+      /* Custom Styles for the table */
+      .table-container {
+          margin: 30px auto;
+          padding: 20px;
+          background-color: #f9f9f9;
+          border-radius: 8px;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+          max-width: 1000px;
+          width: 90%;
+      }
+
+      table {
+          width: 100%;
+          border-collapse: collapse;
+          margin-bottom: 20px;
+      }
+
+      th, td {
+          padding: 12px;
+          text-align: left;
+          border: 1px solid #ddd;
+      }
+
+      th {
+          background-color: #343a40;
+          color: white;
+      }
+
+      td {
+          background-color: #f8f9fa;
+      }
+
+      tr:nth-child(even) td {
+          background-color: #e9ecef;
+      }
+
+      .answer {
+          font-weight: bold;
+          color: #28a745;
+      }
+
+      .question {
+          font-weight: bold;
+          color: #007bff;
+      }
+
+      .options {
+          list-style-type: none;
+          padding-left: 0;
+      }
+
+      .options li {
+          padding: 5px 0;
+      }
+  </style>
+
+  <section id="view-questions" class="container">
+      <center><h2 class="text-center mb-4">View Question and Answer Information</h2></center>
+      <div class="table-container">
+          <table>
+              <thead>
+                  <tr>
+                      <th>Question</th>
+                      <th>Options</th>
+                      <th>Answer</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <!-- Loop through questions and display them -->
+                  {% for r in row_val %}
+                  <tr>
+                      <td class="question">{{ r[1] }}</td>
+                      <td>
+                          <ul class="options">
+                              <li><strong>A.</strong>{{ r[2] }}</li>
+                              <li><strong>B.</strong>{{ r[3] }}</li>
+                              <li><strong>C.</strong>{{ r[4] }}</li>
+                              <li><strong>D.</strong>{{ r[5] }}</li>
+                          </ul>
+                      </td>
+                      <td class="answer">{{ r[6] }}</td>
+                  </tr>
+                  {% endfor %}
+              </tbody>
+          </table>
+      </div>
+  </section>
+{% endblock %}
+
+{% block scripts %}
+  <script>
+      // Toggle the mobile menu
+      document.querySelector('.menu-trigger').addEventListener('click', function() {
+          document.querySelector('.nav').classList.toggle('active');
+      });
+  </script>
+{% endblock %}

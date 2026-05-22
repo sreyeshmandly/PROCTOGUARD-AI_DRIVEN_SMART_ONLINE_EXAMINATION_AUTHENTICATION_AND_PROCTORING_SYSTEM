@@ -1,0 +1,203 @@
+{% extends 'faculty_home.html' %}
+
+{% block content %}
+<style>
+    /* Sticky navbar styles */
+    .header-area {
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        background-color: indigo; /* Violet background for the navbar */
+    }
+
+    .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+    }
+
+    .navbar .logo h1 {
+        margin: 0;
+        color: white; /* Logo text color */
+    }
+
+    .nav {
+        display: flex;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+    }
+
+    .nav li {
+        flex: 1;
+        text-align: center;
+    }
+
+    .nav a {
+        display: block;
+        text-decoration: none;
+        color: white; /* White text for links */
+        font-weight: bold;
+        text-transform: uppercase;
+        padding: 10px;
+    }
+
+    .nav a.active {
+        color: #ffcc00; /* Active link color (golden yellow) */
+    }
+
+    /* Menu Toggler (Hamburger) */
+    .menu-trigger {
+        display: none;
+        cursor: pointer;
+    }
+
+    .menu-trigger span {
+        font-size: 24px;
+        color: white; /* White color for the hamburger icon */
+    }
+
+    /* Mobile View */
+    @media (max-width: 768px) {
+        .menu-trigger {
+            display: block;
+        }
+
+        .nav {
+            display: none;
+            flex-direction: column;
+            position: absolute;
+            top: 60px;
+            left: 0;
+            width: 100%;
+            background-color: violet; /* Keep violet background for mobile menu */
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav.active {
+            display: flex;
+        }
+
+        .nav li {
+            margin: 10px 0;
+            text-align: center;
+        }
+
+        .nav a {
+            font-size: 18px;
+            color: white; /* White text for mobile menu links */
+        }
+    }
+
+    /* Smooth scrolling */
+    html {
+        scroll-behavior: smooth;
+    }
+
+    /* Message styles */
+    .alert {
+        margin-top: 20px;
+        border-radius: 5px;
+    }
+
+    /* Admin login form */
+    .login-wrapper {
+        max-width: 500px;
+        margin: 100px auto;
+        padding: 30px;
+        background-color: #f9f9f9;
+        border-radius: 8px;
+        box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .login-wrapper h2 {
+        text-align: center;
+        margin-bottom: 30px;
+        font-size: 28px;
+        color: indigo;
+    }
+
+    .form-label {
+        font-weight: bold;
+    }
+
+    .btn-primary {
+        background-color: indigo;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        width: 100%;
+        font-size: 18px;
+        border-radius: 5px;
+    }
+
+    .btn-primary:hover {
+        background-color: #3d2a8b;
+    }
+
+    /* Additional accessibility styles */
+    .form-control:invalid {
+        border-color: red;
+    }
+
+    .form-control:valid {
+        border-color: green;
+    }
+</style>
+
+<!-- Exam Creation Form -->
+<div class="login-wrapper">
+    <!-- Flash messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <!-- Exam Form -->
+    <form method="POST" action="{{url_for('create_exam_back')}}">
+        <h2 class="text-uppercase">Create New Exam</h2>
+        <div class="mb-3">
+            <label for="course_code" class="form-label">Subject Name</label>
+            <select class="form-select" id="course_code" name="course_code" required>
+                <option value="">Select Subject</option>
+                {% for course in data %}
+                    <option value="{{course[0]}}">{{course[0]}}</option>
+                {% endfor %}
+                </select>
+                </div>
+        <div class="mb-3">
+            <label for="exam_name" class="form-label">Exam Name*</label>
+            <input type="text" class="form-control" id="exam_name" name="exam_name" required placeholder="Enter the name of the exam">
+        </div>
+
+        <div class="mb-3">
+            <label for="exam_date" class="form-label">Exam Date*</label>
+            <input type="date" class="form-control" id="exam_date" name="exam_date" required placeholder="Select the date for the exam">
+        </div>
+
+        <button type="submit" class="btn btn-primary">Create Exam</button>
+    </form>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Example script for toggling the mobile menu
+    const menuTrigger = document.querySelector('.menu-trigger');
+    const nav = document.querySelector('.nav');
+
+    menuTrigger.addEventListener('click', () => {
+        nav.classList.toggle('active');
+    });
+</script>
+{% endblock %}

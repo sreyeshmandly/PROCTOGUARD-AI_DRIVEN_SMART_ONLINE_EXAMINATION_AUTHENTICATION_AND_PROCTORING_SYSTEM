@@ -1,0 +1,266 @@
+{% extends 'faculty_home.html' %}
+
+{% block content %}
+  <style>
+    /* Sticky navbar styles */
+    .header-area {
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        background-color: indigo;
+    }
+
+    .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+    }
+
+    .navbar .logo h1 {
+        margin: 0;
+        color: white;
+    }
+
+    .nav {
+        display: flex;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+    }
+
+    .nav li {
+        flex: 1;
+        text-align: center;
+    }
+
+    .nav a {
+        display: block;
+        text-decoration: none;
+        color: white;
+        font-weight: bold;
+        text-transform: uppercase;
+        padding: 10px;
+    }
+
+    .nav a.active {
+        color: #ffcc00;
+    }
+
+    /* Menu Toggler (Hamburger) */
+    .menu-trigger {
+        display: none;
+        cursor: pointer;
+    }
+
+    .menu-trigger span {
+        font-size: 24px;
+        color: white;
+    }
+
+    /* Mobile View */
+    @media (max-width: 768px) {
+        .menu-trigger {
+            display: block;
+        }
+
+        .nav {
+            display: none;
+            flex-direction: column;
+            position: absolute;
+            top: 60px;
+            left: 0;
+            width: 100%;
+            background-color: violet;
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav.active {
+            display: flex;
+        }
+
+        .nav li {
+            margin: 10px 0;
+            text-align: center;
+        }
+
+        .nav a {
+            font-size: 18px;
+            color: white;
+        }
+    }
+
+    /* Smooth scrolling */
+    html {
+        scroll-behavior: smooth;
+    }
+
+    /* Message styles */
+    .alert {
+        margin-top: 20px;
+        border-radius: 5px;
+    }
+
+    /* Admin login form */
+    .login-wrapper {
+        max-width: 600px; 
+        margin: 100px auto;
+        padding: 40px;
+        background-color: #f9f9f9;
+        border-radius: 8px;
+        box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .login-wrapper h2 {
+        text-align: center;
+        margin-bottom: 30px;
+        font-size: 28px;
+        color: indigo;
+    }
+
+    .form-label {
+        font-weight: bold;
+    }
+
+    .btn-primary {
+        background-color: indigo;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        width: 100%;
+        font-size: 18px;
+        border-radius: 5px;
+    }
+
+    .btn-primary:hover {
+        background-color: #3d2a8b;
+    }
+
+    /* Question form adjustments */
+    .form-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 30px; /* Space between form and image */
+        padding: 30px;
+    }
+
+    .register-wrapper {
+        width: 100%;
+        max-width: 500px; /* Smaller box size */
+        padding: 30px;
+        background-color: #ffffff;
+        border-radius: 8px;
+        box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .register-wrapper h2 {
+        font-size: 24px;
+        color: indigo;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .register-wrapper .form-control {
+        margin-bottom: 20px;
+    }
+
+    .register-wrapper button {
+        width: 100%;
+    }
+
+    /* Style for the image */
+    .image-container {
+        max-width: 500px; /* Ensure the image is the same width as the form */
+        height: 100%; /* Ensure the image fills the available height */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .image-container img {
+        width: 100%;
+        height: auto; /* Maintain aspect ratio */
+        object-fit: cover; /* Ensure the image covers the area properly */
+        border-radius: 8px;
+    }
+  </style>
+
+  <!-- Display any flash messages -->
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      {% for category, message in messages %}
+        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+          {{ message }}
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+
+  <!-- Add Question Form with Image on the Right -->
+  <div class="form-container">
+    <div class="register-wrapper">
+      <h2 class="text-uppercase">Add Question</h2>
+      <form action="{{ url_for('qsnback') }}" method="POST">
+        <!-- Question input -->
+        <div class="mb-3">
+          <label for="qsn" class="form-label">Enter Subject*</label>
+          <input type="text" class="form-control" id="qsn" name="sub" required placeholder="Enter subject name">
+        </div>
+
+        <div class="mb-3">
+          <label for="qsn" class="form-label">Enter Question*</label>
+          <input type="text" class="form-control" id="qsn" name="qsn" required placeholder="Enter your question">
+        </div>
+
+        <!-- Option 1 input -->
+        <div class="mb-3">
+          <label for="opt1" class="form-label">Option 1*</label>
+          <input type="text" class="form-control" id="opt1" name="opt1" required placeholder="Option 1">
+        </div>
+
+        <!-- Option 2 input -->
+        <div class="mb-3">
+          <label for="opt2" class="form-label">Option 2*</label>
+          <input type="text" class="form-control" id="opt2" name="opt2" required placeholder="Option 2">
+        </div>
+
+        <!-- Option 3 input -->
+        <div class="mb-3">
+          <label for="opt3" class="form-label">Option 3*</label>
+          <input type="text" class="form-control" id="opt3" name="opt3" required placeholder="Option 3">
+        </div>
+
+        <!-- Option 4 input -->
+        <div class="mb-3">
+          <label for="opt4" class="form-label">Option 4*</label>
+          <input type="text" class="form-control" id="opt4" name="opt4" required placeholder="Option 4">
+        </div>
+
+        <!-- Answer selection -->
+        <div class="mb-3">
+          <label for="ans" class="form-label">Correct Answer*</label>
+          <select name="ans" id="ans" class="form-control" required>
+            <option value="">Choose Correct Answer</option>
+            <option value="a">A</option>
+            <option value="b">B</option>
+            <option value="c">C</option>
+            <option value="d">D</option>
+          </select>
+        </div>
+
+        <!-- Submit button -->
+        <button type="submit" class="btn btn-primary">Add Question</button>
+      </form>
+    </div>
+
+    <!-- Image container -->
+    <div class="image-container">
+      <img src="https://via.placeholder.com/500x500" alt="Form Image">
+    </div>
+  </div>
+{% endblock %}

@@ -1,0 +1,96 @@
+{% extends 'faculty_home.html' %}
+
+{% block navbar %}
+  <!-- ***** Header Area Start ***** -->
+  <header class="header-area header-sticky">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <nav class="main-nav navbar">
+                    <!-- ***** Logo Start ***** -->
+                    <a href="{{ url_for('index') }}" class="logo">
+                        <h1>PROCTOGUARD</h1>
+                    </a>
+                    <!-- ***** Logo End ***** -->
+                    <!-- ***** Menu Start ***** -->
+                    <ul class="nav">
+                        <li class="scroll-to-section"><a href="{{ url_for('faculty_home') }}" class="active">Home</a></li>
+                        <li class="scroll-to-section"><a href="{{ url_for('qsnback')}}">Add Questions</a></li>
+                        <li class="scroll-to-section"><a href="{{ url_for('create_exam_back')}}">Create Exam</a></li>
+                        <li class="scroll-to-section"><a href="{{ url_for('viewqsn_faculty') }}">View Question Papers</a></li>
+                        <li class="scroll-to-section"><a href="{{ url_for('faculty_login')}}">Logout</a></li>
+                    </ul>   
+                    <!-- ***** Menu End ***** -->
+                    <!-- Menu Toggler for Mobile -->
+                    <a href="#" class="menu-trigger">
+                        <span>Menu</span>
+                    </a>
+                </nav>
+            </div>
+        </div>
+    </div>
+  </header>
+  <!-- ***** Header Area End ***** -->
+{% endblock %}
+
+{% block content %}
+  <div class="container mt-5">
+    <h2 class="text-center mb-4">Faculty Profile</h2>
+
+    <!-- Display faculty details in a card layout -->
+    <div class="card">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-6">
+            <h5 class="card-title">Full Name</h5>
+            <p class="card-text">{{ faculty_data[1] }}</p> <!-- fullname -->
+          </div>
+          <div class="col-md-6">
+            <h5 class="card-title">Email</h5>
+            <p class="card-text">{{ faculty_data[2] }}</p> <!-- email -->
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6">
+            <h5 class="card-title">Department</h5>
+            <p class="card-text">{{ faculty_data[3] }}</p> <!-- department -->
+          </div>
+          <div class="col-md-6">
+            <h5 class="card-title">Faculty ID</h5>
+            <p class="card-text">{{ faculty_data[4] }}</p> <!-- emp_id -->
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6">
+            <h5 class="card-title">Mobile</h5>
+            <p class="card-text">{{ faculty_data[6] }}</p> <!-- mobile -->
+          </div>
+          <div class="col-md-6">
+            <h5 class="card-title">Registration Date</h5>
+            <p class="card-text">{{ faculty_data[7] }}</p> <!-- registration date -->
+          </div>
+        </div>
+
+        <!-- Optionally, add more actions here -->
+        <div class="text-center mt-4">
+          <a href="{{ url_for('faculty_home') }}" class="btn btn-primary">Back to Home</a>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block footer %}
+<!-- You can add a footer section here if needed -->
+{% endblock %}
+
+{% block scripts %}
+  <script>
+      // Toggle the mobile menu
+      document.querySelector('.menu-trigger').addEventListener('click', function() {
+          document.querySelector('.nav').classList.toggle('active');
+      });
+  </script>
+{% endblock %}

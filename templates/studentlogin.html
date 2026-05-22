@@ -1,0 +1,212 @@
+{% extends 'index.html' %}
+
+{% block navbar %}
+  <!-- ***** Header Area Start ***** -->
+  <header class="header-area header-sticky">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <nav class="main-nav navbar">
+                    <!-- ***** Logo Start ***** -->
+                    <a href="#" class="logo">
+                        <h1>PROCTOGUARD</h1>
+                    </a>
+                    <!-- ***** Logo End ***** -->
+                    <!-- ***** Menu Start ***** -->
+                    <ul class="nav">
+                        <li class="scroll-to-section"><a href="{{ url_for('index') }}" class="active">Home</a></li>
+                        <li class="scroll-to-section"><a href="{{ url_for('faculty_login') }}">Faculty</a></li>
+                        <li class="scroll-to-section"><a href="{{ url_for('studentlogin') }}">Student</a></li>
+                        <li class="scroll-to-section"><a href="{{ url_for('adminlogin') }}">Admin</a></li>
+                    </ul>
+                    <!-- ***** Menu End ***** -->
+                    <!-- Menu Toggler for Mobile -->
+                    <a href="#" class="menu-trigger">
+                        <span>Menu</span>
+                    </a>
+                </nav>
+            </div>
+        </div>
+    </div>
+  </header>
+  <!-- ***** Header Area End ***** -->
+{% endblock %}
+
+{% block content %}
+  <style>
+      /* Sticky navbar styles */
+      .header-area {
+          position: sticky;
+          top: 0;
+          z-index: 1000;
+          background-color: indigo; /* Violet background for the navbar */
+      }
+
+      .navbar {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          width: 100%;
+      }
+
+      .navbar .logo h1 {
+          margin: 0;
+          color: white; /* Logo text color */
+      }
+
+      .nav {
+          display: flex;
+          list-style: none;
+          margin: 0;
+          padding: 0;
+      }
+
+      .nav li {
+          margin-right: 20px;
+      }
+
+      .nav a {
+          text-decoration: none;
+          color: white; /* White text for links */
+          font-weight: bold;
+          text-transform: uppercase;
+      }
+
+      .nav a.active {
+          color: #ffcc00; /* Active link color (golden yellow) */
+      }
+
+      /* Menu Toggler (Hamburger) */
+      .menu-trigger {
+          display: none;
+          cursor: pointer;
+      }
+
+      .menu-trigger span {
+          font-size: 24px;
+          color: white; /* White color for the hamburger icon */
+      }
+
+      /* Mobile View */
+      @media (max-width: 768px) {
+          .menu-trigger {
+              display: block;
+          }
+
+          .nav {
+              display: none;
+              flex-direction: column;
+              position: absolute;
+              top: 60px;
+              left: 0;
+              width: 100%;
+              background-color: violet; /* Keep violet background for mobile menu */
+              box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+          }
+
+          .nav.active {
+              display: flex;
+          }
+
+          .nav li {
+              margin: 10px 0;
+              text-align: center;
+          }
+
+          .nav a {
+              font-size: 18px;
+              color: white; /* White text for mobile menu links */
+          }
+      }
+
+      /* Smooth scrolling */
+      html {
+          scroll-behavior: smooth;
+      }
+
+      /* Admin login form */
+      .login-wrapper {
+          max-width: 500px;
+          margin: 100px auto;
+          padding: 30px;
+          background-color: #f9f9f9;
+          border-radius: 8px;
+          box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      .login-wrapper h2 {
+          text-align: center;
+          margin-bottom: 30px;
+          font-size: 28px;
+          color: indigo;
+      }
+
+      .form-label {
+          font-weight: bold;
+      }
+
+      .btn-primary {
+          background-color: indigo;
+          color: white;
+          border: none;
+          padding: 10px 20px;
+          width: 100%;
+          font-size: 18px;
+          border-radius: 5px;
+      }
+
+      .btn-primary:hover {
+          background-color: #3d2a8b;
+      }
+
+      /* Flash messages styling */
+      .alert {
+          margin-top: 20px;
+          border-radius: 5px;
+      }
+  </style>
+
+  <!-- Display messages -->
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      {% for category, message in messages %}
+        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+          {{ message }}
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+
+  <!-- Admin Login Form Start -->
+  <div class="login-wrapper">
+    <form id="studentlogin" method="POST">
+        {{ form.hidden_tag() }}  <!-- CSRF protection, Flask-WTF -->
+
+        <h2 class="text-uppercase">Student Login</h2>
+        <div class="mb-3">
+            <label for="username" class="form-label">Username*</label>
+            <input type="text" class="form-control" id="username" name="username" required placeholder="Enter your username" value="{{ form.username.data }}">
+        </div>
+        <div class="mb-3">
+            <label for="password" class="form-label">Password*</label>
+            <input type="password" class="form-control" id="password" name="password" required placeholder="Enter your password">
+        </div>
+        <button type="submit" class="btn btn-primary">Login</button>
+    </form>
+    <p> Don't have an account? <a href="{{ url_for('Add_student') }}">Click Here</a></p>
+  </div>
+  <!-- Admin Login Form End -->
+
+{% endblock %}
+
+{% block scripts %}
+  <script>
+      // Toggle the mobile menu
+      document.querySelector('.menu-trigger').addEventListener('click', function() {
+          document.querySelector('.nav').classList.toggle('active');
+      });
+  </script>
+{% endblock %}

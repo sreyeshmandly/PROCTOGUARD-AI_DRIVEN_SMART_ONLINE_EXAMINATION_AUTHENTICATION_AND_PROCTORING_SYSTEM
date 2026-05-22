@@ -1,0 +1,212 @@
+{% extends 'index.html' %}
+
+{% block navbar %}
+  <!-- ***** Header Area Start ***** -->
+  <header class="header-area header-sticky">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <nav class="main-nav navbar">
+                    <!-- ***** Logo Start ***** -->
+                    <a href="#" class="logo">
+                        <h1>PROCTOGUARD</h1>
+                    </a>
+                    <!-- ***** Logo End ***** -->
+                    <!-- ***** Menu Start ***** -->
+                    <ul class="nav">
+                        <li class="scroll-to-section" style="flex: 1;"><a href="{{ url_for('faculty_home') }}" class="active">Home</a></li>
+                        <li class="scroll-to-section" style="flex: 1;"><a href="{{ url_for('prediction') }}">Generate Questions</a></li>
+                        <li class="scroll-to-section" style="flex: 1;"><a href="{{ url_for('qsnback') }}">Add Questions</a></li>
+                        <li class="scroll-to-section" style="flex: 1;"><a href="{{ url_for('create_exam_back') }}">Create Exam</a></li>
+                        <li class="scroll-to-section" style="flex: 1;"><a href="{{ url_for('viewqsn_faculty') }}">View Papers</a></li>
+                        <li class="scroll-to-section" style="flex: 1;"><a href="{{ url_for('exam_results') }}">Exam Results</a></li>
+                        <li class="scroll-to-section" style="flex: 1;"><a href="{{ url_for('faculty_login') }}">Logout</a></li>
+                    </ul>
+                    <!-- ***** Menu End ***** -->
+                    <!-- Menu Toggler for Mobile -->
+                    <a href="#" class="menu-trigger">
+                        <span>Menu</span>
+                    </a>
+                </nav>
+            </div>
+        </div>
+    </div>
+  </header>
+  <!-- ***** Header Area End ***** -->
+{% endblock %}
+
+
+
+{% block content %}
+  <style>
+      /* Sticky navbar styles */
+      .header-area {
+          position: sticky;
+          top: 0;
+          z-index: 1000;
+          background-color: indigo; /* Violet background for the navbar */
+      }
+
+      .navbar {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          width: 100%;
+      }
+
+      .navbar .logo h1 {
+          margin: 0;
+          color: white; /* Logo text color */
+      }
+
+      .nav {
+          display: flex;
+          list-style: none;
+          margin: 0;
+          padding: 0;
+          width: 100%;
+      }
+
+      .nav li {
+          text-align: center;
+      }
+
+      .nav a {
+          display: block;
+          text-decoration: none;
+          color: white; /* White text for links */
+          font-weight: bold;
+          text-transform: uppercase;
+          padding: 10px;
+      }
+
+      .nav a.active {
+          color: #ffcc00; /* Active link color (golden yellow) */
+      }
+
+      /* Menu Toggler (Hamburger) */
+      .menu-trigger {
+          display: none;
+          cursor: pointer;
+      }
+
+      .menu-trigger span {
+          font-size: 24px;
+          color: white; /* White color for the hamburger icon */
+      }
+
+      /* Mobile View */
+      @media (max-width: 768px) {
+          .menu-trigger {
+              display: block;
+          }
+
+          .nav {
+              display: none;
+              flex-direction: column;
+              position: absolute;
+              top: 60px;
+              left: 0;
+              width: 100%;
+              background-color: violet; /* Keep violet background for mobile menu */
+              box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+          }
+
+          .nav.active {
+              display: flex;
+          }
+
+          .nav li {
+              margin: 10px 0;
+              text-align: center;
+          }
+
+          .nav a {
+              font-size: 18px;
+              color: white; /* White text for mobile menu links */
+          }
+      }
+
+      /* Smooth scrolling */
+      html {
+          scroll-behavior: smooth;
+      }
+
+      /* Message styles */
+      .alert {
+          margin-top: 20px;
+          border-radius: 5px;
+      }
+
+      /* Admin login form */
+      .login-wrapper {
+          max-width: 500px;
+          margin: 100px auto;
+          padding: 30px;
+          background-color: #f9f9f9;
+          border-radius: 8px;
+          box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      .login-wrapper h2 {
+          text-align: center;
+          margin-bottom: 30px;
+          font-size: 28px;
+          color: indigo;
+      }
+
+      .form-label {
+          font-weight: bold;
+      }
+
+      .btn-primary {
+          background-color: indigo;
+          color: white;
+          border: none;
+          padding: 10px 20px;
+          width: 100%;
+          font-size: 18px;
+          border-radius: 5px;
+      }
+
+      .btn-primary:hover {
+          background-color: #3d2a8b;
+      }
+
+      /* Admin photo resizing */
+      .admin-photo {
+          width: 250px;  /* Set the desired width */
+          height: 250px; /* Set the desired height */
+          object-fit: cover; /* Ensures the image is scaled correctly without distortion */
+          border-radius: 50%; /* Optional: If you want a circular image */
+      }
+  </style>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <h1 class="text-center">Faculty Dashboard</h1>
+      </div>
+    </div>
+
+    <!-- Photo in the middle -->
+    <div class="row">
+      <div class="col-md-12 text-center">
+        <img src="static/assets/images/1.png">
+      </div>
+    </div>
+  </div>
+
+{% endblock %}
+
+{% block footer %}
+{% endblock %}
+
+{% block scripts %}
+  <script>
+      // Toggle the mobile menu
+      document.querySelector('.menu-trigger').addEventListener('click', function() {
+          document.querySelector('.nav').classList.toggle('active');
+      });
+  </script>
+{% endblock %}

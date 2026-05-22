@@ -1,0 +1,216 @@
+{% extends 'faculty_home.html' %}
+
+{% block content %}
+  <style>
+      /* Sticky navbar styles */
+      .header-area {
+          position: sticky;
+          top: 0;
+          z-index: 1000;
+          background-color: indigo;
+      }
+
+      .navbar {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          width: 100%;
+      }
+
+      .navbar .logo h1 {
+          margin: 0;
+          color: white;
+      }
+
+      .nav {
+          display: flex;
+          list-style: none;
+          margin: 0;
+          padding: 0;
+          width: 100%;
+      }
+
+      .nav li {
+          flex: 1;
+          text-align: center;
+      }
+
+      .nav a {
+          display: block;
+          text-decoration: none;
+          color: white;
+          font-weight: bold;
+          text-transform: uppercase;
+          padding: 10px;
+      }
+
+      .nav a.active {
+          color: #ffcc00;
+      }
+
+      /* Menu Toggler (Hamburger) */
+      .menu-trigger {
+          display: none;
+          cursor: pointer;
+      }
+
+      .menu-trigger span {
+          font-size: 24px;
+          color: white;
+      }
+
+      /* Mobile View */
+      @media (max-width: 768px) {
+          .menu-trigger {
+              display: block;
+          }
+
+          .nav {
+              display: none;
+              flex-direction: column;
+              position: absolute;
+              top: 60px;
+              left: 0;
+              width: 100%;
+              background-color: violet;
+              box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+          }
+
+          .nav.active {
+              display: flex;
+          }
+
+          .nav li {
+              margin: 10px 0;
+              text-align: center;
+          }
+
+          .nav a {
+              font-size: 18px;
+              color: white;
+          }
+      }
+
+      /* Smooth scrolling */
+      html {
+          scroll-behavior: smooth;
+      }
+
+      /* Message styles */
+      .alert {
+          margin-top: 20px;
+          border-radius: 5px;
+      }
+
+      /* Admin login form */
+      .login-wrapper {
+          max-width: 500px;
+          margin: 100px auto;
+          padding: 30px;
+          background-color: #f9f9f9;
+          border-radius: 8px;
+          box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      .login-wrapper h2 {
+          text-align: center;
+          margin-bottom: 30px;
+          font-size: 28px;
+          color: indigo;
+      }
+
+      .form-label {
+          font-weight: bold;
+      }
+
+      .btn-primary {
+          background-color: indigo;
+          color: white;
+          border: none;
+          padding: 10px 20px;
+          width: 100%;
+          font-size: 18px;
+          border-radius: 5px;
+      }
+
+      .btn-primary:hover {
+          background-color: #3d2a8b;
+      }
+  </style>
+
+  <!-- Flash message display -->
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      {% for category, message in messages %}
+        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+          {{ message }}
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+
+  <div class="register-wrapper">
+    <h2 class="text-uppercase">Generate MCQs</h2>
+    <form action="{{ url_for('prediction') }}" method="POST" enctype="multipart/form-data">
+      
+      <!-- Text input or File Upload -->
+      <div class="mb-3">
+        <label for="txt" class="form-label">Enter Subject</label>
+        <input class="form-control" id="txt" name="sub" placeholder="Enter Subject" required />
+      </div>
+      <div class="mb-3">
+        <label for="txt" class="form-label">Enter Text</label>
+        <textarea class="form-control" id="txt" name="txt" placeholder="Enter your text here"></textarea>
+      </div>
+
+      <div class="mb-3">
+        <label for="file" class="form-label">Upload File</label>
+        <input type="file" class="form-control" id="file" name="file" accept=".txt,.pdf,.docx">
+      </div>
+
+      <!-- Number of questions and tone -->
+      <div class="mb-3">
+        <label for="number_of_questions" class="form-label">Number of Questions</label>
+        <input type="number" class="form-control" id="number_of_questions" name="number_of_questions" required>
+      </div>
+
+      <div class="mb-3">
+        <label for="tone" class="form-label">Tone</label>
+        <select name="tone" id="tone" class="form-control">
+          <option value="formal">Formal</option>
+          <option value="informal">Informal</option>
+          <option value="neutral">Neutral</option>
+        </select>
+      </div>
+
+      <!-- Submit button -->
+      <button type="submit" class="btn btn-primary">Generate MCQs</button>
+    </form>
+
+    {% if quiz_data %}
+      <h3>Generated MCQs</h3>
+      <ul>
+        {% for mcq in quiz_data %}
+          <li>
+            <strong>{{ mcq['Question'] }}</strong>
+            <ul>
+              {% for option, text in mcq['Options'].items() %}
+                <li>{{ option }}) {{ text }}</li>
+              {% endfor %}
+            </ul>
+          </li>
+        {% endfor %}
+      </ul>
+
+      <!-- Download buttons -->
+      <div>
+        <a href="{{ url_for('download', format='pdf') }}" class="btn btn-primary">Download as PDF</a>
+        <a href="{{ url_for('download', format='word') }}" class="btn btn-primary">Download as Word</a>
+        <a href="{{ url_for('download', format='answer_key') }}" class="btn btn-primary">Download Answer Key</a>
+      </div>
+    {% endif %}
+  </div>
+{% endblock %}

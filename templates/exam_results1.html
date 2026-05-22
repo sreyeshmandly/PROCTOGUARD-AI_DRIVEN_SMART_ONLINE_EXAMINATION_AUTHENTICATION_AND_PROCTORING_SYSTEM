@@ -1,0 +1,249 @@
+{% extends 'faculty_home.html' %} {% block navbar %}
+<!-- ***** Header Area Start ***** -->
+<header class="header-area header-sticky">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="main-nav navbar">
+          <!-- ***** Logo Start ***** -->
+          <a href="#" class="logo">
+            <h1>PROCTOGUARD</h1>
+          </a>
+          <!-- ***** Logo End ***** -->
+          <!-- ***** Menu Start ***** -->
+          <ul class="nav">
+            <li class="scroll-to-section" style="flex: 1">
+              <a href="{{ url_for('faculty_home') }}" class="active">Home</a>
+            </li>
+            <li class="scroll-to-section" style="flex: 1">
+              <a href="{{ url_for('prediction') }}">Generate Questions</a>
+            </li>
+            <li class="scroll-to-section" style="flex: 1">
+              <a href="{{ url_for('qsnback') }}">Add Questions</a>
+            </li>
+            <li class="scroll-to-section" style="flex: 1">
+              <a href="{{ url_for('create_exam_back') }}">Create Exam</a>
+            </li>
+            <li class="scroll-to-section" style="flex: 1">
+              <a href="{{ url_for('viewqsn_faculty') }}">View Papers</a>
+            </li>
+            <li class="scroll-to-section" style="flex: 1">
+              <a href="{{ url_for('exam_results') }}">Exam Results</a>
+            </li>
+            <li class="scroll-to-section" style="flex: 1">
+              <a href="{{ url_for('faculty_login') }}">Logout</a>
+            </li>
+          </ul>
+          <!-- ***** Menu End ***** -->
+          <!-- Menu Toggler for Mobile -->
+          <a href="#" class="menu-trigger">
+            <span>Menu</span>
+          </a>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+<!-- ***** Header Area End ***** -->
+{% endblock %} {% block content %}
+<style>
+  .header-area {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background-color: indigo;
+  }
+
+  .navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+
+  .navbar .logo h1 {
+    margin: 0;
+    color: white;
+  }
+
+  .nav {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+  }
+
+  .nav li {
+    text-align: center;
+  }
+
+  .nav a {
+    display: block;
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+    text-transform: uppercase;
+    padding: 10px;
+  }
+
+  .nav a.active {
+    color: #ffcc00;
+  }
+
+  .menu-trigger {
+    display: none;
+    cursor: pointer;
+  }
+
+  .menu-trigger span {
+    font-size: 24px;
+    color: white;
+  }
+
+  @media (max-width: 768px) {
+    .menu-trigger {
+      display: block;
+    }
+
+    .nav {
+      display: none;
+      flex-direction: column;
+      position: absolute;
+      top: 60px;
+      left: 0;
+      width: 100%;
+      background-color: violet;
+      box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .nav.active {
+      display: flex;
+    }
+
+    .nav li {
+      margin: 10px 0;
+      text-align: center;
+    }
+
+    .nav a {
+      font-size: 18px;
+      color: white;
+    }
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  .table-container {
+    margin: 30px auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 1000px;
+    width: 90%;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+  }
+
+  th,
+  td {
+    padding: 12px;
+    text-align: left;
+    border: 1px solid #ddd;
+  }
+
+  th {
+    background-color: #343a40;
+    color: white;
+  }
+
+  td {
+    background-color: #f8f9fa;
+  }
+
+  tr:nth-child(even) td {
+    background-color: #e9ecef;
+  }
+
+  .answer {
+    font-weight: bold;
+    color: #28a745;
+  }
+
+  .question {
+    font-weight: bold;
+    color: #007bff;
+  }
+
+  .options {
+    list-style-type: none;
+    padding-left: 0;
+  }
+
+  .options li {
+    padding: 5px 0;
+  }
+</style>
+
+<section id="view-questions" class="container">
+  <h2 class="text-center mb-4">Student Registration Information</h2>
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>S.No</th>
+          <th>Student Id</th>
+          <th>Student Email</th>
+          <th>Exam Name</th>
+          <th>Exam Date</th>
+          <th>Student Answers</th>
+          <th>No. of Questions</th>
+          <th>Exam Status</th>
+          <th>Head Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for r in row_val %}
+        <tr>
+          <td>{{ loop.index }}</td>
+
+          <td>{{ r[1] }}</td>
+          <td>{{ r[2] }}</td>
+          <td>{{ r[3] }}</td>
+          <td>{{ r[4] }}</td>
+          <td>{{ r[5] }}</td>
+          <td>{{ r[6] }}</td>
+          <td>{{ r[7] }}</td>
+          <td>{{ r[8] }}</td>
+          <td>
+            <a
+              href="{{ url_for('reply_mail', s=r[0], s1=r[1], s2=r[2], s3=r[3], s4=r[7]) }}"
+              class="btn btn-warning"
+              >Reply</a
+            >
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %} {% block scripts %}
+<script>
+  document
+    .querySelector(".menu-trigger")
+    .addEventListener("click", function () {
+      document.querySelector(".nav").classList.toggle("active");
+    });
+</script>
+{% endblock %}
