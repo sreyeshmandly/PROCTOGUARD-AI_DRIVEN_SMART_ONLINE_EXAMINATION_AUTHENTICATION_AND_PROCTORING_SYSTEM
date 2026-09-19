@@ -96,17 +96,9 @@ The project presentation and abstract describe the full vision of the system. Th
 | Cell-phone detection during an exam | ✅ | YOLOv8, COCO class `cell phone` |
 | Head-direction tracking | ⚠️ | Bounding-box heuristic; only the last value is stored |
 | Faculty review of proctoring status | ✅ | Status column + email action |
-| Identity re-verification during the exam | ❌ | Face is verified at login only |
-| Lip-movement detection | ❌ | Mentioned in objective/scope; not in the code |
-| Multiple-person ("unauthorised individual") flag | ❌ | Persons are boxed but not counted or flagged |
-| Real-time / customizable alerts to faculty | ❌ | Faculty emails the student manually after the exam |
-| Activity tracking / audit log | ❌ | One status and one head value are saved per attempt |
-| Admin: view faculty / view students | ❌ | `/view_registrations` exists but its template is missing |
-| Profile view / edit | ⚠️ | Faculty profile page exists (not linked in navigation); no editing; no student profile |
-| Analytics for faculty | ❌ | Results table only |
-| Scalability for large exams | ❌ | Not demonstrated; monitoring is local to the server machine |
 
-✅ implemented · ⚠️ partial · ❌ proposed in project documents, not in the repository
+
+✅ implemented · ⚠️ partial · 
 
 ---
 
